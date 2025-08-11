@@ -1,4 +1,4 @@
-package tech.developerlog.gcgd
+package tech.developerlog.parkicle
 
 import io.flutter.embedding.android.FlutterActivity
 
