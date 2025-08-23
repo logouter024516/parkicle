@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'user_profile_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -34,10 +35,10 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Google Sign-In')),
+      backgroundColor: Color(0xFFFFFFFF),
       body: Center(
-        child: ElevatedButton(
-          child: Text('Sign in with Google'),
+        child: SignInButton(
+          Buttons.Google,
           onPressed: () async {
             final userCredential = await signInWithGoogle();
             if (userCredential != null && userCredential.user != null) {

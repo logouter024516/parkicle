@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-
-// 파이어베이스 관련 import
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
-// 구글 로그인 및 파이어베이스 인증 관련 import
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-// 유저 프로필 페이지 import
 import 'user_profile_page.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,21 +51,41 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('로그인 선택')),
+      backgroundColor: Color(0xFFFFFFFF),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            final userCredential = await signInWithGoogle();
-            if (userCredential != null && userCredential.user != null) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserProfilePage(user: userCredential.user!),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("PARKICLE", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+            SizedBox(height: 48),
+            Image.asset(
+              'assets/img.png',
+              height: 80,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(height: 48),
+            SizedBox(
+              width: 260,
+              height: 50,
+              child: SignInButton(
+                Buttons.Google,
+                text: 'Continue with Google',
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-              );
-            }
-          },
-          child: const Text('구글 로그인'),
+                onPressed: () async {
+                  final userCredential = await signInWithGoogle();
+                  if (userCredential != null && userCredential.user != null) {
+                    final profilePage = await UserProfilePage.getProfilePage(userCredential.user!);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => profilePage),
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

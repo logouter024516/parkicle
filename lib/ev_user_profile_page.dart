@@ -2,26 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart';
-import 'ev_user_profile_page.dart';
+import 'car_info_page.dart';
 
-class UserProfilePage extends StatelessWidget {
+class EVUserProfilePage extends StatelessWidget {
   final User user;
-  const UserProfilePage({super.key, required this.user});
-
-  static Future<Widget> getProfilePage(User user) async {
-    final doc = await FirebaseFirestore.instance.collection('car_info').doc(user.uid).get();
-    final isEV = doc.exists && (doc.data()?['isEV'] == true || doc.data()?['isEV'] == "true");
-    if (isEV) {
-      return EVUserProfilePage(user: user);
-    } else {
-      return UserProfilePage(user: user);
-    }
-  }
+  const EVUserProfilePage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: const Color(0xFFE3F2FD), // 연한 하늘색
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -32,15 +22,10 @@ class UserProfilePage extends StatelessWidget {
                   ? NetworkImage(user.photoURL!)
                   : null,
               child: user.photoURL == null
-                  ? const Icon(Icons.person, size: 48)
+                  ? const Icon(Icons.electric_car, size: 48, color: Colors.blue)
                   : null,
             ),
             const SizedBox(height: 16),
-            Text(
-              'WELCOME, ${user.displayName ?? "USER"}',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
             Text(
               user.email ?? '',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
@@ -81,25 +66,15 @@ class UserProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () async {
-                final doc = await FirebaseFirestore.instance.collection('car_info').doc(user.uid).get();
-                final isEV = doc.exists && (doc.data()?['isEV'] == true || doc.data()?['isEV'] == "true");
-                if (isEV) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => EVUserProfilePage(user: user)),
-                  );
-                } else {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => UserProfilePage(user: user)),
-                  );
-                }
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => CarInfoPage(user: user)),
+                );
               },
               child: const Text('차량 정보 등록/수정하기'),
             ),
             const SizedBox(height: 16),
-            // 로그아웃 버튼을 가장 아래로 이동
             Padding(
               padding: const EdgeInsets.only(top: 32),
               child: ElevatedButton(
