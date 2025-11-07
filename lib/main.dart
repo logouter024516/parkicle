@@ -120,6 +120,7 @@ class _MyAppState extends State<MyApp> {
               },
             )
           : const HomePage(),
+      theme: ThemeData(primarySwatch: Colors.blue,fontFamily: 'Pretendard'),
     );
   }
 }

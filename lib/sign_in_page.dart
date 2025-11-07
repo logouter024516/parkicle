@@ -42,7 +42,12 @@ class _SignInPageState extends State<SignInPage> {
           onPressed: () async {
             final userCredential = await signInWithGoogle();
             if (userCredential != null && userCredential.user != null) {
-              await UserProfilePage.pushProfilePage(context, userCredential.user!);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserProfilePage(user: userCredential.user!),
+                ),
+              );
             }
           },
         ),

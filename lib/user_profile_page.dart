@@ -168,10 +168,13 @@ class UserProfilePage extends StatelessWidget {
                           builder: (context, snapshot) {
                             if (!snapshot.hasData || snapshot.data == null) return const SizedBox();
                             final data = snapshot.data!.data() as Map<String, dynamic>?;
-                            final parkingTime = data != null && data['parkingTime'] != null
+                            final parkingTime = data != null && data['parkingTime'] != null && data['parkingTime'].toString().isNotEmpty
                                 ? int.tryParse(data['parkingTime'].toString()) ?? 0
                                 : 0;
-                            if (parkingTime > 0) {
+                            final fuelType = data != null && data['fuel_type'] != null && data['fuel_type'].toString().isNotEmpty
+                                ? data['fuel_type']
+                                : '';
+                            if ((fuelType != '전기' && fuelType != '하이브리드(PHEV, 외부 충전 가능)') && parkingTime > 0) {
                               return const Padding(
                                 padding: EdgeInsets.only(top: 10),
                                 child: Text('불법주차중', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
